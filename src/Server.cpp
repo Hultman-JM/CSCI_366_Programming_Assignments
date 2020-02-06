@@ -26,16 +26,39 @@
  * @return length of the file in bytes
  */
 int get_file_length(ifstream *file){
+	&file.seekg(0, std::ios::end);
+	int fileSize = &file.tellg();
+	return fileSize;
 }
 
 
-void Server::initialize(unsigned int board_size,
-                        string p1_setup_board,
-                        string p2_setup_board){
+void Server::initialize(unsigned int board_size, string p1_setup_board, string p2_setup_board){
+	
+
 }
 
 
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
+	if (x < BOARD_SIZE && y < BOARD_SIZE) {
+		for (int i = 0; i < BOARD_SIZE; i++)
+		{
+			for (ijt j = 0; j < BOARD_SIZE; j++)
+			{
+				if ()//enters if a hit
+				{
+					return HIT;
+				}
+				else// enters if a miss
+				{
+					return MISS;
+				}
+			}
+		}
+	}
+	else {
+		return OUT_OF_BOUNDS;
+		//std::cout << "shot was out of bounds" << std::endl;
+	}
 }
 
 
