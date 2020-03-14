@@ -85,11 +85,11 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
 		{
             if (player == 1)
             {
-                getline(p1_setup_board, line);
+                getline(p2_setup_board, line);
             }
             else if (player == 2)
             {
-                getline(p2_setup_board, line);
+                getline(p1_setup_board, line);
             }
             else
             {
