@@ -41,8 +41,10 @@ int get_file_length(ifstream *file){
 
 void Server::initialize(unsigned int board_size, string p1_setup_board, string p2_setup_board){
     Server::board_size = board_size;
-    Server::p1_setup_board.open(p1_setup_board);
-    Server::p2_setup_board.open(p2_setup_board);
+    //Server::p1_setup_board.open(p1_setup_board);
+    Server::p1_setup_board = scan_setup_board(p1_setup_board);
+    //Server::p2_setup_board.open(p2_setup_board);
+    Server::p2_setup_board = scan_setup_board(p2_setup_board);
     //cout << "board size: " << board_size << std::endl;
     int p1_file_length;
     int p2_file_length;
@@ -77,26 +79,47 @@ void Server::initialize(unsigned int board_size, string p1_setup_board, string p
 
 
 Server::~Server() {
+    //delete Server::p1_setup_board;
+    //delete Server::p2_setup_board;
 }
 
 
 BitArray2D *Server::scan_setup_board(string setup_board_name){
+    BitArray2D *board = new BitArray2D(board_size, board_size);
+    string line;
+    ifstream inBoard;
+    inBoard.open(setup_board_name);
+    for (int i = 0; i < board_size; i ++)
+    {
+        getline(inBoard, line);
+        for (int j = 0; j < board_size ; ++j)
+        {
+            if (line[j] == SHIPS[0] || line[j] == SHIPS[1] || line[j] == SHIPS[2] || line[j] == SHIPS[3] || line[j] == SHIPS[4])
+            {
+                board->set(i,j);
+            }
+        }
+    }
+    return board;
 }
 
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
-    string line;
+    //string line;
+    char elem;
     //cout << "board size: " << board_size << std::endl;
 	if (x < board_size && y < board_size)
 	{
-		for (int i = 0; i < board_size; i++)
+		for (int j = 0; j < BOARD_SIZE; j++)
 		{
             if (player == 1)
             {
-                getline(p2_setup_board, line);
+                elem = Server::p2_setup_board->get(y,x);//x and y need to be input in reverse for some reason to return the correct hit values
+                //getline(p2_setup_board, line);
             }
             else if (player == 2)
             {
-                getline(p1_setup_board, line);
+                elem = Server::p1_setup_board->get(y,x);//x and y need to be input in reverse for some reason to return the correct hit values
+                //getline(p1_setup_board, line);
             }
             else
             {
@@ -109,14 +132,15 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
                     throw "player number is too small";
                 }
             }
-            for (int j = 0; j < BOARD_SIZE; j++)
+            for (int i = 0; i < board_size; i++)
             {
                 if (player == 1)
                 {
-                    if (j == x && i == y)//enters to check coords
+                    if (i == x && j == y)//enters to check coords
                     {
                         //        if = C        or        if = B       or       if = R       or        if = S        or        if = D
-                        if (line[j] == SHIPS[0] || line[j] == SHIPS[1] || line[j] == SHIPS[2] || line[j] == SHIPS[3] || line[j] == SHIPS[4])
+                        //if (line[j] == SHIPS[0] || line[j] == SHIPS[1] || line[j] == SHIPS[2] || line[j] == SHIPS[3] || line[j] == SHIPS[4])
+                        if (elem == 1)
                         {
                             return HIT;
                         }
@@ -128,10 +152,11 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
                 }
                 else if (player == 2)
                 {
-                    if (j == x && i == y)//enters if a hit
+                    if (i == x && j == y)//enters if a hit
                     {
                         //        if = C        or        if = B       or       if = R       or        if = S        or        if = D
-                        if (line[j] == SHIPS[0] || line[j] == SHIPS[1] || line[j] == SHIPS[2] || line[j] == SHIPS[3] || line[j] == SHIPS[4])
+                        //if (line[j] == SHIPS[0] || line[j] == SHIPS[1] || line[j] == SHIPS[2] || line[j] == SHIPS[3] || line[j] == SHIPS[4])
+                        if (elem == 1)
                         {
                             return HIT;
                         }

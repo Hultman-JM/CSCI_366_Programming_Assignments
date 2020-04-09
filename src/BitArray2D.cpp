@@ -18,17 +18,43 @@
 #include "BitArray2D.hpp"
 
 BitArray2D::BitArray2D(unsigned int rows, unsigned int columns) {
-
+    if (rows <= 0)
+    {
+        throw BitArray2DException("row is invalid");
+    }
+    if (columns <= 0)
+    {
+        throw BitArray2DException("column is invalid");
+    }
+    BitArray2D::rows = rows;
+    BitArray2D::columns = columns;
+    BitArray2D::array = new char[rows*columns];
 }
 
 
 BitArray2D::~BitArray2D() {
-
+    delete BitArray2D::array;
 }
 
 
 bool BitArray2D::get(unsigned int row, unsigned int column){
    // check array bounds
+   if (row < 0)
+   {
+       throw BitArray2DException("row too low");
+   }
+   else if (row >= BitArray2D::rows)
+   {
+       throw BitArray2DException("row too high");
+   }
+   if (column < 0)
+   {
+       throw BitArray2DException("column to low");
+   }
+   else if (column >= BitArray2D::columns)
+   {
+       throw BitArray2DException("col too high");
+   }
 
    // get the element
    return get_bit_elem(array, columns, row, column);
@@ -38,7 +64,23 @@ bool BitArray2D::get(unsigned int row, unsigned int column){
 
 void BitArray2D::set(unsigned int row, unsigned int column){
    // check array bounds
+    if (row < 0)
+    {
+        throw BitArray2DException("row too low");
+    }
+    else if (row >= BitArray2D::rows)
+    {
+        throw BitArray2DException("row too high");
+    }
+    if (column < 0)
+    {
+        throw BitArray2DException("column to low");
+    }
+    else if (column >= BitArray2D::columns)
+    {
+        throw BitArray2DException("col too high");
+    }
 
-   // set the element
+    // set the element
    set_bit_elem(array, columns, row, column);
 }
