@@ -76,6 +76,13 @@ void Server::initialize(unsigned int board_size, string p1_setup_board, string p
 }
 
 
+Server::~Server() {
+}
+
+
+BitArray2D *Server::scan_setup_board(string setup_board_name){
+}
+
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     string line;
     //cout << "board size: " << board_size << std::endl;
